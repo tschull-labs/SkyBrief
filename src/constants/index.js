@@ -34,7 +34,10 @@ export const REFRESH_INTERVAL_MS = 10 * 60 * 1000
 
 export const MAX_FAVORITES = 5
 
-export const API_BASE = 'https://aviationweather.gov/api/data'
+// Requests go through a same-origin proxy to avoid CORS blocks from aviationweather.gov.
+// Dev: Vite proxies /api/weather → https://aviationweather.gov/api/data
+// Prod: netlify.toml redirect does the same server-side
+export const API_BASE = '/api/weather'
 
 export const TABS = [
   { id: 'home', label: 'Home' },
