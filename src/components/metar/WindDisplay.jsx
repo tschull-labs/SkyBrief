@@ -2,16 +2,15 @@ import { formatWindDir, knotsToKmh } from '../../utils/metarDecoder.js'
 
 function WindArrow({ direction }) {
   if (direction === 'VRB' || direction == null) return null
-  const deg = Number(direction)
   return (
     <svg
-      className="w-8 h-8 shrink-0"
-      viewBox="0 0 32 32"
-      style={{ transform: `rotate(${deg}deg)` }}
+      className="w-10 h-10 shrink-0 drop-shadow-sm"
+      viewBox="0 0 40 40"
+      style={{ transform: `rotate(${Number(direction)}deg)` }}
     >
-      <circle cx="16" cy="16" r="15" fill="rgba(56,189,248,0.1)" stroke="rgba(56,189,248,0.3)" strokeWidth="1" />
-      <path d="M16 4 L20 22 L16 19 L12 22 Z" fill="#0ea5e9" />
-      <circle cx="16" cy="16" r="2" fill="#0ea5e9" />
+      <circle cx="20" cy="20" r="19" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.2)" strokeWidth="1" />
+      <polygon points="20,4 24,26 20,22 16,26" fill="#3B82F6" />
+      <circle cx="20" cy="20" r="3" fill="#3B82F6" />
     </svg>
   )
 }
@@ -23,30 +22,22 @@ export default function WindDisplay({ wdir, wspd, wgst }) {
   const gust = wgst ? Number(wgst) : null
 
   return (
-    <div className="space-y-2">
-      <p className="text-xs font-medium text-slate-400 uppercase tracking-wide">Wind</p>
+    <div className="space-y-1.5">
+      <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Wind</p>
       <div className="flex items-center gap-3">
         <WindArrow direction={wdir} />
         <div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold text-slate-800">
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <span className="text-2xl font-black text-gray-900">
               {isVariable ? 'Variable' : formatWindDir(wdir)}
             </span>
-            <span className="text-base font-semibold text-slate-700">
-              {speedKt} kt
-            </span>
+            <span className="text-lg font-bold text-gray-700">{speedKt} kt</span>
           </div>
-          <div className="flex items-center gap-1.5 mt-0.5">
-            <span className="text-xs text-slate-500">{speedKmh} km/h</span>
-            {gust && (
-              <span className="text-xs text-amber-600 font-medium">
-                Gust {gust} kt ({knotsToKmh(gust)} km/h)
-              </span>
-            )}
-          </div>
-          {speedKt === 0 && (
-            <span className="text-xs text-slate-500">Calm</span>
-          )}
+          <p className="text-sm text-gray-400 mt-0.5">
+            {speedKmh} km/h
+            {gust && <span className="ml-2 text-amber-600 font-semibold">Gust {gust} kt</span>}
+            {speedKt === 0 && ' · Calm'}
+          </p>
         </div>
       </div>
     </div>

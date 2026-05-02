@@ -1,21 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-category-vfr: #16a34a;
-  --color-category-mvfr: #2563eb;
-  --color-category-ifr: #dc2626;
-  --color-category-lifr: #9333ea;
+  --color-category-vfr: #1E8E3E;
+  --color-category-mvfr: #1967D2;
+  --color-category-ifr: #D93025;
+  --color-category-lifr: #9334E9;
 
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
-
-  --shadow-glass: 0 4px 24px 0 rgba(56, 149, 213, 0.1), 0 1.5px 6px 0 rgba(0, 0, 0, 0.06);
-  --shadow-glass-hover: 0 8px 32px 0 rgba(56, 149, 213, 0.18);
-  --shadow-nav: 0 -2px 24px 0 rgba(56, 149, 213, 0.12), 0 2px 12px 0 rgba(0, 0, 0, 0.08);
-
-  --animate-shimmer: shimmer 1.8s infinite linear;
-  --animate-fade-in: fadeIn 0.25s ease-out;
-  --animate-slide-up: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 @keyframes shimmer {
@@ -29,91 +21,73 @@
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @layer base {
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
+  *, *::before, *::after { box-sizing: border-box; }
 
-  html, body, #root {
-    height: 100%;
-  }
+  html, body, #root { height: 100%; }
 
   body {
-    background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #e8f4fd 100%);
-    background-attachment: fixed;
+    background-color: #ECEEF2;
     min-height: 100dvh;
     font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
-    color: #0f172a;
+    color: #111827;
   }
 }
 
 @layer components {
+  /* Material-style solid card — replaces glass-card everywhere */
   .glass-card {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 1rem;
-    box-shadow: var(--shadow-glass);
+    background: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 14px rgba(0,0,0,0.07);
   }
 
+  /* Dark pill nav */
   .glass-nav {
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 9999px;
-    box-shadow: var(--shadow-nav);
+    background: #1C1C1E;
+    border-radius: 100px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2);
   }
 
+  /* Input */
   .glass-input {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    border-radius: 0.75rem;
-    transition: all 0.2s ease;
+    background: #F3F4F6;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
   }
-
   .glass-input:focus {
-    background: rgba(255, 255, 255, 0.85);
+    background: #FFFFFF;
+    border-color: #3B82F6;
     outline: none;
-    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4);
+    box-shadow: 0 0 0 4px rgba(59,130,246,0.12);
   }
 
   .skeleton-shimmer {
-    background: linear-gradient(90deg, rgba(186, 230, 253, 0.7) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(186, 230, 253, 0.7) 100%);
+    background: linear-gradient(90deg, #E5E7EB 0%, #F9FAFB 50%, #E5E7EB 100%);
     background-size: 200% 100%;
     animation: shimmer 1.8s infinite linear;
-    border-radius: 0.5rem;
+    border-radius: 8px;
   }
 
-  .category-badge-vfr {
-    background: rgba(22, 163, 74, 0.12);
-    color: #15803d;
-    border: 1px solid rgba(22, 163, 74, 0.25);
-  }
+  /* Flight category badges — solid, vivid */
+  .category-badge-vfr  { background: #DCFCE7; color: #15803D; }
+  .category-badge-mvfr { background: #DBEAFE; color: #1D4ED8; }
+  .category-badge-ifr  { background: #FEE2E2; color: #B91C1C; }
+  .category-badge-lifr { background: #F3E8FF; color: #7E22CE; }
 
-  .category-badge-mvfr {
-    background: rgba(37, 99, 235, 0.12);
-    color: #1d4ed8;
-    border: 1px solid rgba(37, 99, 235, 0.25);
-  }
-
-  .category-badge-ifr {
-    background: rgba(220, 38, 38, 0.12);
-    color: #b91c1c;
-    border: 1px solid rgba(220, 38, 38, 0.25);
-  }
-
-  .category-badge-lifr {
-    background: rgba(147, 51, 234, 0.12);
-    color: #7e22ce;
-    border: 1px solid rgba(147, 51, 234, 0.25);
-  }
+  /* Colored card banners per flight condition */
+  .banner-vfr  { background: linear-gradient(135deg, #16A34A 0%, #22C55E 100%); }
+  .banner-mvfr { background: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%); }
+  .banner-ifr  { background: linear-gradient(135deg, #B91C1C 0%, #EF4444 100%); }
+  .banner-lifr { background: linear-gradient(135deg, #7E22CE 0%, #A855F7 100%); }
+  .banner-taf  { background: linear-gradient(135deg, #6D28D9 0%, #8B5CF6 100%); }
+  .banner-rwy  { background: linear-gradient(135deg, #B45309 0%, #F59E0B 100%); }
+  .banner-fav  { background: linear-gradient(135deg, #BE185D 0%, #EC4899 100%); }
+  .banner-default { background: linear-gradient(135deg, #475569 0%, #94A3B8 100%); }
 }

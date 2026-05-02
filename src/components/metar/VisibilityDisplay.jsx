@@ -6,19 +6,16 @@ export default function VisibilityDisplay({ visib }) {
 
   return (
     <div className="space-y-1">
-      <p className="text-xs font-medium text-slate-400 uppercase tracking-wide">Visibility</p>
-      <div className="flex items-baseline gap-1">
-        <span className="text-xl font-bold text-slate-800">
+      <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Visibility</p>
+      <div className="flex items-baseline gap-1.5">
+        <span className="text-2xl font-black text-gray-900">
           {isUnlimited ? '10+' : visib < 1 ? visib.toFixed(2) : visib}
         </span>
-        <span className="text-sm text-slate-500">SM</span>
+        <span className="text-sm font-semibold text-gray-400">SM</span>
       </div>
-      {!isUnlimited && meters != null && (
-        <p className="text-sm text-slate-500">{meters.toLocaleString()} m</p>
-      )}
-      {isUnlimited && (
-        <p className="text-sm text-slate-500">Unlimited</p>
-      )}
+      <p className="text-sm text-gray-500">
+        {isUnlimited ? 'Unlimited' : meters != null ? `${meters.toLocaleString()} m` : ''}
+      </p>
     </div>
   )
 }

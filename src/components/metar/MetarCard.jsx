@@ -1,4 +1,3 @@
-import GlassCard from '../shared/GlassCard.jsx'
 import FlightCategoryBadge from './FlightCategoryBadge.jsx'
 import WindDisplay from './WindDisplay.jsx'
 import CloudLayers from './CloudLayers.jsx'
@@ -8,19 +7,26 @@ import VisibilityDisplay from './VisibilityDisplay.jsx'
 import ObservationTime from './ObservationTime.jsx'
 import RawMetar from './RawMetar.jsx'
 
-function Divider() {
-  return <div className="border-t border-slate-200/60" />
+const BANNER_CLASS = {
+  VFR: 'banner-vfr',
+  MVFR: 'banner-mvfr',
+  IFR: 'banner-ifr',
+  LIFR: 'banner-lifr',
 }
 
-function FavoriteButton({ isFavorite, onToggle }) {
+function Divider() {
+  return <div className="border-t border-gray-100" />
+}
+
+function StarButton({ isFavorite, onToggle }) {
   return (
     <button
       onClick={onToggle}
-      className="p-1.5 rounded-full hover:bg-slate-100/60 transition-colors"
+      className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 active:bg-white/40 transition-colors"
       aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
     >
       <svg
-        className={`w-5 h-5 transition-colors ${isFavorite ? 'text-amber-400 fill-amber-400' : 'text-slate-300'}`}
+        className={`w-5 h-5 transition-all ${isFavorite ? 'fill-white text-white' : 'text-white/70'}`}
         viewBox="0 0 24 24"
         stroke="currentColor"
         strokeWidth={1.8}
@@ -34,60 +40,60 @@ function FavoriteButton({ isFavorite, onToggle }) {
 export default function MetarCard({ metar, isFavorite, onToggleFavorite }) {
   if (!metar) return null
 
+  const bannerClass = BANNER_CLASS[metar.flightCategory] ?? 'banner-default'
+
   return (
     <div className="px-4 animate-[slideUp_0.3s_cubic-bezier(0.16,1,0.3,1)]">
-      <GlassCard className="space-y-4">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-slate-800">{metar.name ?? metar.icaoId}</h2>
-              <FavoriteButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
+      <div className="glass-card overflow-hidden">
+        {/* Colorful banner header */}
+        <div className={`${bannerClass} p-4 pb-5`}>
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <p className="text-white/70 text-xs font-semibold uppercase tracking-widest mb-0.5">METAR</p>
+              <h2 className="text-xl font-black text-white truncate">{metar.name ?? metar.icaoId}</h2>
+              <ObservationTime obsTime={metar.obsTime} white />
             </div>
-            <ObservationTime obsTime={metar.obsTime} />
+            <div className="flex items-center gap-2 shrink-0">
+              <FlightCategoryBadge category={metar.flightCategory} inverted />
+              <StarButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
+            </div>
           </div>
-          <FlightCategoryBadge category={metar.flightCategory} />
         </div>
 
-        <Divider />
+        {/* Body */}
+        <div className="p-4 space-y-4">
+          <WindDisplay wdir={metar.wdir} wspd={metar.wspd} wgst={metar.wgst} />
 
-        {/* Wind */}
-        <WindDisplay wdir={metar.wdir} wspd={metar.wspd} wgst={metar.wgst} />
+          <Divider />
 
-        <Divider />
+          <div className="grid grid-cols-2 gap-4">
+            <TempDewpoint temp={metar.temp} dewp={metar.dewp} />
+            <VisibilityDisplay visib={metar.visib} />
+          </div>
 
-        {/* Temp + Visibility */}
-        <div className="grid grid-cols-2 gap-4">
-          <TempDewpoint temp={metar.temp} dewp={metar.dewp} />
-          <VisibilityDisplay visib={metar.visib} />
+          <Divider />
+
+          <PressureDisplay altim={metar.altim} />
+
+          <Divider />
+
+          <CloudLayers metar={metar} />
+
+          {metar.wxString && (
+            <>
+              <Divider />
+              <div className="space-y-1">
+                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Present Weather</p>
+                <p className="text-sm font-semibold text-gray-700">{metar.wxString}</p>
+              </div>
+            </>
+          )}
+
+          <Divider />
+
+          <RawMetar rawOb={metar.rawOb} />
         </div>
-
-        <Divider />
-
-        {/* Pressure */}
-        <PressureDisplay altim={metar.altim} />
-
-        <Divider />
-
-        {/* Clouds */}
-        <CloudLayers metar={metar} />
-
-        {/* Present weather */}
-        {metar.wxString && (
-          <>
-            <Divider />
-            <div className="space-y-1">
-              <p className="text-xs font-medium text-slate-400 uppercase tracking-wide">Present Weather</p>
-              <p className="text-sm font-medium text-slate-700">{metar.wxString}</p>
-            </div>
-          </>
-        )}
-
-        <Divider />
-
-        {/* Raw METAR */}
-        <RawMetar rawOb={metar.rawOb} />
-      </GlassCard>
+      </div>
     </div>
   )
 }
